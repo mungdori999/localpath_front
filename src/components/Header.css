@@ -1,0 +1,137 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  gap: 12px;
+  padding: 0 16px;
+  min-height: var(--header-h);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  z-index: 100;
+}
+
+.header__logo {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--brand);
+  text-decoration: none;
+}
+
+.header__actions {
+  flex-shrink: 0;
+}
+
+.kakao-login-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 10px;
+  background: #fee500;
+  color: #191600;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.kakao-login-btn:active:not(:disabled) {
+  filter: brightness(0.95);
+}
+
+.kakao-login-btn:disabled {
+  opacity: 0.7;
+}
+
+.kakao-login-btn--compact {
+  min-height: 40px;
+}
+
+.kakao-login-btn--block {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 16px;
+  font-size: 1rem;
+  border-radius: 14px;
+}
+
+.user-menu {
+  position: relative;
+}
+
+.user-menu__trigger {
+  display: flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.user-menu__trigger:active,
+.user-menu__trigger[aria-expanded='true'] {
+  border-color: var(--brand-light);
+}
+
+.user-avatar {
+  display: block;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-avatar--fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--brand);
+  color: #fff;
+  font-weight: 600;
+}
+
+.user-menu__dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 168px;
+  padding: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+
+.user-menu__name {
+  margin: 0;
+  padding: 10px 14px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.user-menu__logout {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  text-align: left;
+  cursor: pointer;
+}
+
+.user-menu__logout:active {
+  background: var(--bg-muted);
+  color: var(--text);
+}
