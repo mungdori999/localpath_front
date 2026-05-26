@@ -1,88 +1,63 @@
-import { useCallback, useEffect, useState } from 'react'
-import { AuthContext } from './auth-state'
+import { useCallback, useState, useEffect } from "react";
+import { AuthContext } from "./auth-state";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
-const STORAGE_KEY = 'localpath_user'
+const STORAGE_KEY = "localpath_user";
 
 function loadStoredUser() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    return raw ? JSON.parse(raw) : null
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
   } catch {
-    return null
+    return null;
   }
-}
-
-function initKakao() {
-  const key = import.meta.env.VITE_KAKAO_JS_KEY
-  if (!key || !window.Kakao) return false
-  if (!window.Kakao.isInitialized()) {
-    window.Kakao.init(key)
-  }
-  return window.Kakao.isInitialized()
 }
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(loadStoredUser)
-  const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    initKakao()
-  }, [])
+  const [user, setUser] = useState(loadStoredUser);
+  const [loading, setLoading] = useState(false);
 
   const persistUser = useCallback((nextUser) => {
-    setUser(nextUser)
+    setUser(nextUser);
+
     if (nextUser) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(nextUser))
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(nextUser));
     } else {
-      localStorage.removeItem(STORAGE_KEY)
+      localStorage.removeItem(STORAGE_KEY);
     }
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const accessToken = params.get("access");
+
+    if (!accessToken) return;
+
+    localStorage.setItem("accessToken", accessToken);
+
+    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+
+    const decodedUser = jwtDecode(accessToken);
+    persistUser({
+      ...decodedUser,
+    });
+
+    window.history.replaceState({}, document.title, "/");
+  }, [persistUser]);
 
   const loginWithKakao = useCallback(() => {
-    setLoading(true)
+    setLoading(true);
 
-    const key = import.meta.env.VITE_KAKAO_JS_KEY
-    if (!key || !initKakao()) {
-      persistUser({
-        id: 'dev-user',
-        nickname: '로컬러',
-        profileImage: null,
-      })
-      setLoading(false)
-      return
-    }
-
-    window.Kakao.Auth.login({
-      success: () => {
-        window.Kakao.API.request({
-          url: '/v2/user/me',
-          success: (res) => {
-            const profile = res.kakao_account?.profile
-            persistUser({
-              id: String(res.id),
-              nickname: profile?.nickname ?? '사용자',
-              profileImage: profile?.profile_image_url ?? null,
-            })
-            setLoading(false)
-          },
-          fail: () => {
-            setLoading(false)
-          },
-        })
-      },
-      fail: () => {
-        setLoading(false)
-      },
-    })
-  }, [persistUser])
+    window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
+  }, []);
 
   const logout = useCallback(() => {
-    const key = import.meta.env.VITE_KAKAO_JS_KEY
-    if (key && window.Kakao?.Auth?.getAccessToken()) {
-      window.Kakao.Auth.logout()
-    }
-    persistUser(null)
-  }, [persistUser])
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem("accessToken");
+    persistUser(null);
+    setLoading(false);
+  }, [persistUser]);
 
   return (
     <AuthContext.Provider
@@ -90,5 +65,5 @@ export function AuthProvider({ children }) {
     >
       {children}
     </AuthContext.Provider>
-  )
+  );
 }

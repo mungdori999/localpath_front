@@ -40,6 +40,31 @@ function PassIcon({ active }) {
   )
 }
 
+function CharacterIcon({ active }) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <circle
+        cx="12"
+        cy="10"
+        r="5"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        fill={active ? 'currentColor' : 'none'}
+        fillOpacity={active ? 0.2 : 0}
+      />
+      <path
+        d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+      {active && (
+        <circle cx="16" cy="7" r="1.5" fill="currentColor" />
+      )}
+    </svg>
+  )
+}
+
 export default function BottomNav() {
   return (
     <nav className="bottom-nav safe-bottom" aria-label="메인 메뉴">
@@ -56,6 +81,14 @@ export default function BottomNav() {
           <>
             <PassIcon active={isActive} />
             <span>패스</span>
+          </>
+        )}
+      </NavLink>
+      <NavLink to="/character" className="bottom-nav__item">
+        {({ isActive }) => (
+          <>
+            <CharacterIcon active={isActive} />
+            <span>망둥이</span>
           </>
         )}
       </NavLink>
