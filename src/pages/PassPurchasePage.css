@@ -1,0 +1,103 @@
+.purchase-courses {
+  margin-bottom: 20px;
+}
+
+.purchase-courses h2 {
+  margin: 0 0 12px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.purchase-course-card {
+  margin-bottom: 16px;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.purchase-course-card__head {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.purchase-course-card__head span:first-child {
+  font-size: 1.25rem;
+}
+
+.purchase-course-card__head h3 {
+  margin: 0 0 2px;
+  font-size: 0.875rem;
+}
+
+.purchase-course-card__head p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.purchase-course-card .course-map {
+  margin-top: 0;
+}
+
+.purchase-course-card__spots {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.purchase-course-card__spots li {
+  padding: 10px 0;
+  border-top: 1px dashed var(--border);
+}
+
+.purchase-spot__label {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.purchase-spot__num {
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--brand);
+  border-radius: 50%;
+}
+
+.purchase-spot__label strong {
+  font-size: 0.8125rem;
+}
+
+.purchase-spot__label > span:last-child {
+  font-size: 0.6875rem;
+  color: var(--brand);
+  font-weight: 600;
+}
+
+.purchase-spot__address {
+  margin: 0 0 4px;
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+}
+
+.purchase-course-card__spots li p:not(.purchase-spot__address) {
+  margin: 0 0 6px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.purchase-course-card__spots a {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--brand);
+  text-decoration: none;
+}

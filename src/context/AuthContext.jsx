@@ -1,69 +1,62 @@
-import { useCallback, useState, useEffect } from "react";
-import { AuthContext } from "./auth-state";
-import axios from "axios";
-import { jwtDecode } from "jwt-decode";
-
-const STORAGE_KEY = "localpath_user";
-
-function loadStoredUser() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : null;
-  } catch {
-    return null;
-  }
-}
+import { useCallback, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { logoutOnServer } from '../api/authApi'
+import { clearAccessToken } from '../api/token'
+import { URL } from '../data/url'
+import { ROUTES } from '../constants/routes'
+import {
+  resolveInitialUser,
+  saveAccessTokenSession,
+  setStoredUser,
+} from '../utils/authSession'
+import { AuthContext } from './auth-state'
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(loadStoredUser);
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
+  const [user, setUser] = useState(resolveInitialUser)
+  const [loading, setLoading] = useState(false)
 
   const persistUser = useCallback((nextUser) => {
-    setUser(nextUser);
+    setUser(nextUser)
+    setStoredUser(nextUser)
+  }, [])
 
-    if (nextUser) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(nextUser));
-    } else {
-      localStorage.removeItem(STORAGE_KEY);
-    }
-  }, []);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const accessToken = params.get("access");
-
-    if (!accessToken) return;
-
-    localStorage.setItem("accessToken", accessToken);
-
-    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-
-    const decodedUser = jwtDecode(accessToken);
-    persistUser({
-      ...decodedUser,
-    });
-
-    window.history.replaceState({}, document.title, "/");
-  }, [persistUser]);
+  const saveAccessToken = useCallback(
+    (accessToken) => {
+      persistUser(saveAccessTokenSession(accessToken))
+    },
+    [persistUser],
+  )
 
   const loginWithKakao = useCallback(() => {
-    setLoading(true);
+    setLoading(true)
+    window.location.href = URL.KAKAO_OAUTH
+  }, [])
 
-    window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
-  }, []);
-
-  const logout = useCallback(() => {
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem("accessToken");
-    persistUser(null);
-    setLoading(false);
-  }, [persistUser]);
+  const logout = useCallback(async () => {
+    setLoading(true)
+    try {
+      await logoutOnServer()
+    } finally {
+      navigate(ROUTES.HOME, { replace: true })
+      clearAccessToken()
+      persistUser(null)
+      setLoading(false)
+    }
+  }, [persistUser, navigate])
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, loginWithKakao, logout, isLoggedIn: !!user }}
+      value={{
+        user,
+        loading,
+        loginWithKakao,
+        logout,
+        isLoggedIn: !!user,
+        saveAccessToken,
+      }}
     >
       {children}
     </AuthContext.Provider>
-  );
+  )
 }

@@ -1,46 +1,25 @@
-import { Link } from 'react-router-dom'
-import { passes } from '../data/passes'
-
-function formatPrice(price) {
-  return price.toLocaleString('ko-KR')
-}
+import PassProductCard from '../components/pass/PassProductCard'
+import PageHeader from '../components/ui/PageHeader'
+import PageState from '../components/ui/PageState'
+import { usePasses } from '../hooks/usePasses'
 
 export default function PassSelectPage() {
+  const { data: passes, loading, error } = usePasses()
+
   return (
     <section className="page pass-select">
-      <header className="page__header">
-        <h1>패스 고르기</h1>
-        <p>여행할 지역의 로컬패스를 선택하세요</p>
-      </header>
+      <PageHeader
+        title="패스 고르기"
+        description="패스를 눌러 망원동 코스와 지도 동선을 확인한 뒤 구매하세요"
+      />
 
-      <ul className="pass-list">
-        {passes.map((pass) => (
-          <li key={pass.id}>
-            <Link
-              to={`/passes/${pass.id}/purchase`}
-              className="pass-card"
-            >
-              <span className="pass-card__emoji" aria-hidden>
-                {pass.image}
-              </span>
-              <div className="pass-card__content">
-                <span className="pass-card__region">{pass.region}</span>
-                <h2>{pass.name}</h2>
-                <p className="pass-card__desc">{pass.description}</p>
-                <div className="pass-card__meta">
-                  <span className="pass-card__duration">{pass.duration}</span>
-                  <span className="pass-card__price">
-                    {formatPrice(pass.price)}원
-                  </span>
-                </div>
-              </div>
-              <span className="pass-card__chevron" aria-hidden>
-                ›
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <div className="pass-select__list">
+        <PageState loading={loading} error={error}>
+          {passes?.map((pass) => (
+            <PassProductCard key={pass.id} pass={pass} />
+          ))}
+        </PageState>
+      </div>
     </section>
   )
 }

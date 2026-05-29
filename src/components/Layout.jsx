@@ -1,14 +1,11 @@
 import { Outlet, useLocation } from 'react-router-dom'
+import { isPurchaseRoute } from '../constants/routes'
 import Header from './Header'
 import BottomNav from './BottomNav'
 
-function hideBottomNav(pathname) {
-  return pathname.includes('/purchase')
-}
-
 export default function Layout() {
   const { pathname } = useLocation()
-  const showNav = !hideBottomNav(pathname)
+  const showNav = !isPurchaseRoute(pathname)
 
   return (
     <div className="app-shell">

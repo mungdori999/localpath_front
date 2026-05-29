@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import { ROUTES } from '../constants/routes'
 import './BottomNav.css'
 
 function HomeIcon({ active }) {
@@ -40,27 +41,24 @@ function PassIcon({ active }) {
   )
 }
 
-function CharacterIcon({ active }) {
+function MyIcon({ active }) {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
       <circle
         cx="12"
-        cy="10"
-        r="5"
+        cy="9"
+        r="4"
         stroke="currentColor"
         strokeWidth="1.8"
         fill={active ? 'currentColor' : 'none'}
         fillOpacity={active ? 0.2 : 0}
       />
       <path
-        d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6"
+        d="M5 20c0-3.3 2.7-6 7-6s7 2.7 7 6"
         stroke="currentColor"
         strokeWidth="1.8"
         strokeLinecap="round"
       />
-      {active && (
-        <circle cx="16" cy="7" r="1.5" fill="currentColor" />
-      )}
     </svg>
   )
 }
@@ -68,7 +66,7 @@ function CharacterIcon({ active }) {
 export default function BottomNav() {
   return (
     <nav className="bottom-nav safe-bottom" aria-label="메인 메뉴">
-      <NavLink to="/" end className="bottom-nav__item">
+      <NavLink to={ROUTES.HOME} end className="bottom-nav__item">
         {({ isActive }) => (
           <>
             <HomeIcon active={isActive} />
@@ -76,7 +74,7 @@ export default function BottomNav() {
           </>
         )}
       </NavLink>
-      <NavLink to="/passes" className="bottom-nav__item">
+      <NavLink to={ROUTES.PASSES} className="bottom-nav__item">
         {({ isActive }) => (
           <>
             <PassIcon active={isActive} />
@@ -84,11 +82,11 @@ export default function BottomNav() {
           </>
         )}
       </NavLink>
-      <NavLink to="/character" className="bottom-nav__item">
+      <NavLink to={ROUTES.MYPAGE} className="bottom-nav__item">
         {({ isActive }) => (
           <>
-            <CharacterIcon active={isActive} />
-            <span>망둥이</span>
+            <MyIcon active={isActive} />
+            <span>마이</span>
           </>
         )}
       </NavLink>
