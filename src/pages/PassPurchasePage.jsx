@@ -1,22 +1,21 @@
 import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import CourseMap from '../components/map/CourseMap'
-import KakaoLoginButton from '../components/auth/KakaoLoginButton'
 import SpotList from '../components/course/SpotList'
 import QuantityControl from '../components/ui/QuantityControl'
-import { useAuth } from '../hooks/useAuth'
 import { usePass } from '../hooks/usePass'
 import { ROUTES } from '../constants/routes'
 import { MSG } from '../constants/messages'
 import { formatPrice } from '../utils/format'
+import { addPurchasedPass } from '../utils/purchasedPasses'
 import './PassPurchasePage.css'
 
 export default function PassPurchasePage() {
   const { passId } = useParams()
-  const { isLoggedIn, loginWithKakao, loading: authLoading } = useAuth()
   const { data: pass, loading, error } = usePass(passId)
   const [quantity, setQuantity] = useState(1)
   const [purchased, setPurchased] = useState(false)
+  const [purchasing, setPurchasing] = useState(false)
 
   if (error) {
     return <Navigate to={ROUTES.PASSES} replace />
@@ -33,8 +32,12 @@ export default function PassPurchasePage() {
   const total = pass.price * quantity
 
   function handlePurchase() {
-    if (!isLoggedIn) return
-    setPurchased(true)
+    setPurchasing(true)
+    addPurchasedPass(pass, quantity)
+    setTimeout(() => {
+      setPurchasing(false)
+      setPurchased(true)
+    }, 400)
   }
 
   if (purchased) {
@@ -44,13 +47,19 @@ export default function PassPurchasePage() {
           <span className="purchase-success__icon" aria-hidden>
             ✓
           </span>
-          <h1>구매 완료</h1>
+          <h1>가상 결제 완료</h1>
           <p>
             <strong>{pass.name}</strong>
             <br />
-            {quantity}매가 발급되었습니다
+            {quantity}매가 발급되었습니다 (데모)
           </p>
-          <Link to={ROUTES.PASSES} className="btn btn--primary btn--lg">
+          <Link
+            to={ROUTES.passQr(pass.id)}
+            className="btn btn--primary btn--lg"
+          >
+            결제 QR 보기
+          </Link>
+          <Link to={ROUTES.PASSES} className="btn btn--secondary btn--lg">
             다른 패스 보기
           </Link>
         </div>
@@ -64,6 +73,8 @@ export default function PassPurchasePage() {
         <Link to={ROUTES.PASSES} className="back-link">
           ← 패스 목록
         </Link>
+
+        <p className="purchase-demo-note">실제 결제 없이 체험용 가상 구매입니다</p>
 
         <article className="purchase-hero">
           <span className="purchase-hero__emoji" aria-hidden>
@@ -104,24 +115,17 @@ export default function PassPurchasePage() {
 
       <div className="purchase-bar safe-bottom">
         <div className="purchase-bar__total">
-          <span>합계</span>
+          <span>합계 (가상)</span>
           <strong>{formatPrice(total)}원</strong>
         </div>
-        {!isLoggedIn ? (
-          <KakaoLoginButton
-            block
-            loading={authLoading}
-            onClick={loginWithKakao}
-          />
-        ) : (
-          <button
-            type="button"
-            className="btn btn--primary btn--lg btn--block"
-            onClick={handlePurchase}
-          >
-            {formatPrice(total)}원 결제하기
-          </button>
-        )}
+        <button
+          type="button"
+          className="btn btn--primary btn--lg btn--block"
+          onClick={handlePurchase}
+          disabled={purchasing}
+        >
+          {purchasing ? '처리 중…' : `${formatPrice(total)}원 가상 결제하기`}
+        </button>
       </div>
     </section>
   )

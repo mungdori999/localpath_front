@@ -41,6 +41,19 @@
   margin-top: 0;
 }
 
+.purchase-demo-note {
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  font-size: 0.8125rem;
+  color: var(--brand);
+  background: var(--brand-bg);
+  border-radius: 10px;
+}
+
+.purchase-success .btn + .btn {
+  margin-top: 10px;
+}
+
 .purchase-course-card__spots {
   margin: 12px 0 0;
   padding: 0;

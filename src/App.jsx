@@ -7,6 +7,8 @@ import PassSelectPage from './pages/PassSelectPage'
 import PassPurchasePage from './pages/PassPurchasePage'
 import MyPage from './pages/MyPage'
 import SurveyPage from './pages/SurveyPage'
+import BadgePage from './pages/BadgePage'
+import PassQrPage from './pages/PassQrPage'
 import { ROUTES } from './constants/routes'
 
 export default function App() {
@@ -27,10 +29,26 @@ export default function App() {
               }
             />
             <Route
+              path="mypage/passes/:passId/qr"
+              element={
+                <RequireAuth>
+                  <PassQrPage />
+                </RequireAuth>
+              }
+            />
+            <Route
               path="survey"
               element={
                 <RequireAuth>
                   <SurveyPage />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="badges"
+              element={
+                <RequireAuth>
+                  <BadgePage />
                 </RequireAuth>
               }
             />

@@ -1,0 +1,38 @@
+.visit-verify {
+  margin-top: 8px;
+}
+
+.visit-verify__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 14px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--brand);
+  background: var(--brand-bg);
+  border: 1px solid rgba(26, 107, 74, 0.25);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.visit-verify__btn:active:not(:disabled) {
+  opacity: 0.85;
+}
+
+.visit-verify__btn:disabled {
+  cursor: default;
+}
+
+.visit-verify__btn--done {
+  color: var(--text-muted);
+  background: var(--bg-muted);
+  border-color: var(--border);
+}
+
+.visit-verify__msg {
+  margin: 6px 0 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}

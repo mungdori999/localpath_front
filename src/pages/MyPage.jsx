@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { getDisplayName } from '../utils/authSession'
+import { getPurchasedPasses } from '../utils/purchasedPasses'
 import { ROUTES } from '../constants/routes'
 import { MSG } from '../constants/messages'
 import PageHeader from '../components/ui/PageHeader'
@@ -10,6 +11,7 @@ import './MyPage.css'
 export default function MyPage() {
   const { user, logout, loading } = useAuth()
   const displayName = getDisplayName(user)
+  const purchasedPasses = getPurchasedPasses()
 
   return (
     <section className="page mypage">
@@ -25,6 +27,19 @@ export default function MyPage() {
       </div>
 
       <nav className="mypage-menu" aria-label="마이페이지 메뉴">
+        <Link to={ROUTES.BADGES} className="mypage-menu__item">
+          <span className="mypage-menu__icon" aria-hidden>
+            🏅
+          </span>
+          <span>
+            <strong>배지</strong>
+            <small>방문 인증으로 배지를 모아보세요</small>
+          </span>
+          <span className="mypage-menu__arrow" aria-hidden>
+            ›
+          </span>
+        </Link>
+
         <Link to={ROUTES.SURVEY} className="mypage-menu__item">
           <span className="mypage-menu__icon" aria-hidden>
             ✨
@@ -37,17 +52,46 @@ export default function MyPage() {
             ›
           </span>
         </Link>
-
-        <div className="mypage-menu__item mypage-menu__item--static">
-          <span className="mypage-menu__icon" aria-hidden>
-            📋
-          </span>
-          <span>
-            <strong>보유 패스</strong>
-            <small>구매한 패스가 여기에 표시됩니다</small>
-          </span>
-        </div>
       </nav>
+
+      <section className="mypage-passes" aria-labelledby="mypage-passes-title">
+        <h2 id="mypage-passes-title" className="mypage-passes__title">
+          보유 패스
+        </h2>
+
+        {purchasedPasses.length > 0 ? (
+          <ul className="mypage-passes__list">
+            {purchasedPasses.map((p) => (
+              <li key={p.passId}>
+                <Link
+                  to={ROUTES.passQr(p.passId)}
+                  className="mypage-menu__item mypage-passes__item"
+                >
+                  <span className="mypage-menu__icon" aria-hidden>
+                    {p.image}
+                  </span>
+                  <span>
+                    <strong>{p.name}</strong>
+                    <small>
+                      {p.quantity}매 · 가상 구매 · QR 결제 보기
+                    </small>
+                  </span>
+                  <span className="mypage-menu__arrow" aria-hidden>
+                    ›
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="mypage-passes__empty">
+            <p>아직 보유한 패스가 없어요</p>
+            <Link to={ROUTES.PASSES} className="btn btn--secondary">
+              패스 둘러보기
+            </Link>
+          </div>
+        )}
+      </section>
 
       <button
         type="button"

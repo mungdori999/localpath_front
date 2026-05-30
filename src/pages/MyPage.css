@@ -94,6 +94,44 @@
   font-size: 1.125rem;
 }
 
+.mypage-passes {
+  margin-bottom: 24px;
+}
+
+.mypage-passes__title {
+  margin: 0 0 10px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.mypage-passes__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mypage-passes__item {
+  width: 100%;
+}
+
+.mypage-passes__empty {
+  padding: 20px 16px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.mypage-passes__empty p {
+  margin: 0 0 12px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
 .mypage-logout {
   min-height: 48px;
   background: var(--surface);

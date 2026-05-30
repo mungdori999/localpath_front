@@ -13,4 +13,7 @@ export const URL = {
   SURVEY_QUESTIONS: `${API_URL}/survey/questions`,
   SURVEY_ME: `${API_URL}/survey/me`,
   SURVEY_HOME: `${API_URL}/survey/home`,
+  BADGES: `${API_URL}/badges`,
+  VISITS: `${API_URL}/visits`,
+  VISITS_ME: `${API_URL}/visits/me`,
 };

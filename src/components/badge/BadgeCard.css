@@ -1,0 +1,184 @@
+.badge-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.badge-card--locked {
+  opacity: 0.92;
+}
+
+.badge-card--unlocked {
+  border-color: rgba(26, 107, 74, 0.35);
+  box-shadow: 0 2px 12px rgba(26, 107, 74, 0.08);
+}
+
+.badge-card__main {
+  display: flex;
+  gap: 14px;
+  padding: 16px;
+}
+
+.badge-card__requirements-preview {
+  margin: 0 0 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.badge-card__req {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.badge-card__req:last-child {
+  border-bottom: none;
+}
+
+.badge-card__req-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 0.8125rem;
+}
+
+.badge-card__req-name {
+  font-weight: 600;
+}
+
+.badge-card__verify {
+  margin-top: 0;
+}
+
+.badge-card__emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  font-size: 1.75rem;
+  background: var(--bg);
+  border-radius: 14px;
+}
+
+.badge-card--locked .badge-card__emoji {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: var(--bg-muted);
+}
+
+.badge-card__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.badge-card__region {
+  display: inline-block;
+  margin-bottom: 4px;
+  padding: 2px 8px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--brand);
+  background: var(--brand-bg);
+  border-radius: 999px;
+}
+
+.badge-card__name {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--font-display);
+  font-size: 1rem;
+}
+
+.badge-card--locked .badge-card__name {
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.badge-card__desc {
+  margin: 0 0 10px;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.badge-card__requirements-preview {
+  margin: 0 0 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.badge-card__requirements-preview li {
+  padding: 0;
+}
+
+.badge-card__progress {
+  position: relative;
+  height: 6px;
+  margin-top: 8px;
+  background: var(--bg-muted);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.badge-card__progress-bar {
+  height: 100%;
+  background: var(--brand);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.badge-card__progress-text {
+  position: absolute;
+  top: -18px;
+  right: 0;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.badge-card__detail {
+  padding: 0 16px 16px;
+  border-top: 1px solid var(--border);
+}
+
+.badge-card__detail-title {
+  margin: 12px 0 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.badge-card__requirements {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.badge-card__requirements li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 0.8125rem;
+}
+
+.badge-card__req--done {
+  color: var(--brand);
+}
+
+.badge-card__req-check {
+  flex-shrink: 0;
+  width: 18px;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.badge-card__unlocked-at {
+  margin: 10px 0 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
