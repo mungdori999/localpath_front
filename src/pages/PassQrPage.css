@@ -57,15 +57,28 @@
   border-radius: 4px;
 }
 
+.pass-qr-card--expired {
+  opacity: 0.92;
+}
+
+.pass-qr-card--expired .pass-qr-card__code {
+  border-style: solid;
+  border-color: var(--border);
+  background: var(--bg-muted);
+}
+
 .pass-qr-card__loading,
-.pass-qr-card__error {
+.pass-qr-card__error,
+.pass-qr-card__expired {
   margin: 0;
   font-size: 0.875rem;
   color: var(--text-muted);
 }
 
-.pass-qr-card__error {
+.pass-qr-card__error,
+.pass-qr-card__expired {
   color: #b42318;
+  font-weight: 600;
 }
 
 .pass-qr-card__meta {

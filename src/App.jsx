@@ -19,7 +19,14 @@ export default function App() {
           <Route element={<Layout />}>
             <Route index element={<HomePage />} />
             <Route path="passes" element={<PassSelectPage />} />
-            <Route path="passes/:passId/purchase" element={<PassPurchasePage />} />
+            <Route
+              path="passes/:passId/purchase"
+              element={
+                <RequireAuth>
+                  <PassPurchasePage />
+                </RequireAuth>
+              }
+            />
             <Route
               path="mypage"
               element={
@@ -29,7 +36,7 @@ export default function App() {
               }
             />
             <Route
-              path="mypage/passes/:passId/qr"
+              path="mypage/tickets/:ticketId/qr"
               element={
                 <RequireAuth>
                   <PassQrPage />

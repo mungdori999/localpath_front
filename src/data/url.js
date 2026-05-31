@@ -16,4 +16,5 @@ export const URL = {
   BADGES: `${API_URL}/badges`,
   VISITS: `${API_URL}/visits`,
   VISITS_ME: `${API_URL}/visits/me`,
+  MY_PASSES: `${API_URL}/my/passes`,
 };

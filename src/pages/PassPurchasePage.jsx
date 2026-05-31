@@ -4,18 +4,19 @@ import CourseMap from '../components/map/CourseMap'
 import SpotList from '../components/course/SpotList'
 import QuantityControl from '../components/ui/QuantityControl'
 import { usePass } from '../hooks/usePass'
+import { purchasePass } from '../api/memberPassesApi'
 import { ROUTES } from '../constants/routes'
 import { MSG } from '../constants/messages'
 import { formatPrice } from '../utils/format'
-import { addPurchasedPass } from '../utils/purchasedPasses'
 import './PassPurchasePage.css'
 
 export default function PassPurchasePage() {
   const { passId } = useParams()
   const { data: pass, loading, error } = usePass(passId)
   const [quantity, setQuantity] = useState(1)
-  const [purchased, setPurchased] = useState(false)
+  const [purchaseResult, setPurchaseResult] = useState(null)
   const [purchasing, setPurchasing] = useState(false)
+  const [purchaseError, setPurchaseError] = useState('')
 
   if (error) {
     return <Navigate to={ROUTES.PASSES} replace />
@@ -31,16 +32,22 @@ export default function PassPurchasePage() {
 
   const total = pass.price * quantity
 
-  function handlePurchase() {
+  async function handlePurchase() {
     setPurchasing(true)
-    addPurchasedPass(pass, quantity)
-    setTimeout(() => {
+    setPurchaseError('')
+    try {
+      const result = await purchasePass(pass.id, quantity)
+      setPurchaseResult(result)
+    } catch (err) {
+      setPurchaseError(
+        err.response?.data?.detail ?? '구매에 실패했어요. 다시 시도해 주세요.',
+      )
+    } finally {
       setPurchasing(false)
-      setPurchased(true)
-    }, 400)
+    }
   }
 
-  if (purchased) {
+  if (purchaseResult) {
     return (
       <section className="page purchase purchase--success">
         <div className="purchase-success">
@@ -51,17 +58,18 @@ export default function PassPurchasePage() {
           <p>
             <strong>{pass.name}</strong>
             <br />
-            {quantity}매가 발급되었습니다 (데모)
+            {purchaseResult.tickets.length}매가 발급되었습니다
+            <br />
+            <small>각 이용권은 구매 후 24시간 동안 유효해요</small>
           </p>
-          <Link
-            to={ROUTES.passQr(pass.id)}
-            className="btn btn--primary btn--lg"
-          >
-            결제 QR 보기
-          </Link>
-          <Link to={ROUTES.PASSES} className="btn btn--secondary btn--lg">
-            다른 패스 보기
-          </Link>
+          <div className="purchase-success__actions">
+            <Link to={ROUTES.MYPAGE} className="btn btn--primary btn--lg">
+              보유 패스 확인
+            </Link>
+            <Link to={ROUTES.PASSES} className="btn btn--secondary btn--lg">
+              다른 패스 보기
+            </Link>
+          </div>
         </div>
       </section>
     )
@@ -74,7 +82,9 @@ export default function PassPurchasePage() {
           ← 패스 목록
         </Link>
 
-        <p className="purchase-demo-note">실제 결제 없이 체험용 가상 구매입니다</p>
+        <p className="purchase-demo-note">
+          실제 결제 없이 체험용 가상 구매입니다 · 이용권 유효기간 24시간
+        </p>
 
         <article className="purchase-hero">
           <span className="purchase-hero__emoji" aria-hidden>
@@ -111,6 +121,12 @@ export default function PassPurchasePage() {
           <span>수량</span>
           <QuantityControl value={quantity} onChange={setQuantity} />
         </div>
+
+        {purchaseError && (
+          <p className="purchase-error" role="alert">
+            {purchaseError}
+          </p>
+        )}
       </div>
 
       <div className="purchase-bar safe-bottom">

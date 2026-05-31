@@ -41,6 +41,15 @@
   margin-top: 0;
 }
 
+.purchase-error {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  font-size: 0.8125rem;
+  color: #b42318;
+  background: rgba(180, 35, 24, 0.08);
+  border-radius: 10px;
+}
+
 .purchase-demo-note {
   margin: 0 0 16px;
   padding: 10px 12px;
@@ -50,8 +59,10 @@
   border-radius: 10px;
 }
 
-.purchase-success .btn + .btn {
-  margin-top: 10px;
+.purchase-success__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .purchase-course-card__spots {

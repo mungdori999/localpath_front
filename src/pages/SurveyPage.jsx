@@ -45,8 +45,8 @@ export default function SurveyPage() {
   return (
     <section className="page survey-page">
       <PageHeader
-        title="여행 성향 설문"
-        description="5가지 질문으로 나에게 맞는 망원동 루트를 찾아보세요"
+        title="나가기 취향 설문"
+        description="5가지 질문으로 데이트·외식에 맞는 코스를 찾아보세요"
       />
 
       {loading ? (

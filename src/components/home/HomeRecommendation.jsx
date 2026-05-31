@@ -12,7 +12,7 @@ export default function HomeRecommendation() {
     return (
       <div className="home-rec home-rec--guest">
         <p className="home-rec__hint">
-          로그인 후 설문을 완료하면 나에게 맞는 패스·코스를 추천해 드려요.
+          로그인 후 간단한 설문을 하면 나에게 맞는 패스·코스를 추천해 드려요.
         </p>
       </div>
     );
@@ -25,16 +25,16 @@ export default function HomeRecommendation() {
   if (!home?.surveyCompleted) {
     return (
       <div className="home-rec home-rec--cta">
-        <h2 className="home-rec__title">나만의 루트 찾기</h2>
+        <h2 className="home-rec__title">나에게 맞는 코스 찾기</h2>
         <p className="home-rec__desc">
-          간단한 설문으로 힐링·먹거리·체험·야경 중 나의 여행 유형을 알아보고,
-          맞춤 패스를 추천받아 보세요.
+          간단한 설문으로 여유·맛집·구경·골목 중 나의 취향을 알아보고,
+          데이트·외식에 맞는 패스를 추천받아 보세요.
         </p>
         <Link
           to={ROUTES.SURVEY}
           className="btn btn--primary btn--lg btn--block"
         >
-          설문조사 하고 루트 추천받기
+          취향 설문하고 코스 추천받기
         </Link>
       </div>
     );
@@ -50,11 +50,11 @@ export default function HomeRecommendation() {
         {rec?.primaryTypeLabel && (
           <span className="home-rec__type">{rec.primaryTypeLabel}</span>
         )}
-        을 위한 코스
+        에 맞는 코스
       </h2>
 
       {topTypes.length > 0 && (
-        <ul className="home-rec__types" aria-label="여행 유형">
+        <ul className="home-rec__types" aria-label="취향 유형">
           {topTypes.map((t) => (
             <li key={t.type} className="home-rec__type-chip">
               {t.label}
@@ -86,7 +86,7 @@ export default function HomeRecommendation() {
           추천 코스 보러가기
         </Link>
         <Link to={ROUTES.SURVEY} className="home-rec__retry">
-          설문 다시 하기
+          취향 설문 다시 하기
         </Link>
       </div>
     </div>

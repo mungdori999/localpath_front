@@ -5,7 +5,7 @@ export const ROUTES = {
   SURVEY: '/survey',
   BADGES: '/badges',
   passPurchase: (passId) => `/passes/${passId}/purchase`,
-  passQr: (passId) => `/mypage/passes/${passId}/qr`,
+  passTicketQr: (ticketId) => `/mypage/tickets/${ticketId}/qr`,
 }
 
 export function isPurchaseRoute(pathname) {
