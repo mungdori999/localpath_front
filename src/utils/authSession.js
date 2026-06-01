@@ -4,8 +4,6 @@ import { MSG } from '../constants/messages'
 import { ROUTES } from '../constants/routes'
 import { clearAccessToken, getAccessToken, setAccessToken } from '../api/token'
 
-export { STORAGE_KEYS }
-
 export function getStoredUser() {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.USER)

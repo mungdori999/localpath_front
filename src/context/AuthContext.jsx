@@ -4,11 +4,7 @@ import { logoutOnServer } from '../api/authApi'
 import { clearAccessToken } from '../api/token'
 import { URL } from '../data/url'
 import { ROUTES } from '../constants/routes'
-import {
-  resolveInitialUser,
-  saveAccessTokenSession,
-  setStoredUser,
-} from '../utils/authSession'
+import { resolveInitialUser, setStoredUser } from '../utils/authSession'
 import { AuthContext } from './auth-state'
 
 export function AuthProvider({ children }) {
@@ -20,13 +16,6 @@ export function AuthProvider({ children }) {
     setUser(nextUser)
     setStoredUser(nextUser)
   }, [])
-
-  const saveAccessToken = useCallback(
-    (accessToken) => {
-      persistUser(saveAccessTokenSession(accessToken))
-    },
-    [persistUser],
-  )
 
   const loginWithKakao = useCallback(() => {
     setLoading(true)
@@ -53,7 +42,6 @@ export function AuthProvider({ children }) {
         loginWithKakao,
         logout,
         isLoggedIn: !!user,
-        saveAccessToken,
       }}
     >
       {children}

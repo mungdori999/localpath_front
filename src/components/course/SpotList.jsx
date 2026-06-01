@@ -1,6 +1,47 @@
+import { useState } from 'react'
 import { getKakaoMapPlaceUrl } from '../../lib/loadKakaoMap'
+import OwnerCurationModal from './OwnerCurationModal'
 
 const KAKAO_MAP_LINK_LABEL = '카카오맵에서 보기'
+const CURATION_BUTTON_LABEL = '사장님 큐레이션 보기'
+
+function SpotActions({ spot, variant }) {
+  const [curationOpen, setCurationOpen] = useState(false)
+  const hasCuration = !!spot.curation
+
+  return (
+    <div
+      className={
+        variant === 'purchase'
+          ? 'purchase-spot__actions'
+          : 'course-spot__actions'
+      }
+    >
+      {hasCuration && (
+        <button
+          type="button"
+          className="course-spot__curation-btn"
+          onClick={() => setCurationOpen(true)}
+        >
+          {CURATION_BUTTON_LABEL}
+        </button>
+      )}
+      <a
+        href={getKakaoMapPlaceUrl(spot)}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={variant === 'purchase' ? undefined : 'course-spot__map-link'}
+      >
+        {KAKAO_MAP_LINK_LABEL}
+      </a>
+      <OwnerCurationModal
+        spot={spot}
+        open={curationOpen}
+        onClose={() => setCurationOpen(false)}
+      />
+    </div>
+  )
+}
 
 function SpotListItem({ spot, index, variant }) {
   if (variant === 'purchase') {
@@ -13,13 +54,7 @@ function SpotListItem({ spot, index, variant }) {
         </div>
         <p className="purchase-spot__address">{spot.address}</p>
         <p>{spot.note}</p>
-        <a
-          href={getKakaoMapPlaceUrl(spot)}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {KAKAO_MAP_LINK_LABEL}
-        </a>
+        <SpotActions spot={spot} variant="purchase" />
       </li>
     )
   }
@@ -34,14 +69,7 @@ function SpotListItem({ spot, index, variant }) {
         </div>
         <p className="course-spot__address">{spot.address}</p>
         <p className="course-spot__note">{spot.note}</p>
-        <a
-          href={getKakaoMapPlaceUrl(spot)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="course-spot__map-link"
-        >
-          {KAKAO_MAP_LINK_LABEL}
-        </a>
+        <SpotActions spot={spot} variant="card" />
       </div>
     </li>
   )

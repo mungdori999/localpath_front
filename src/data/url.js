@@ -3,7 +3,6 @@ const API_URL = `${API_BASE}/api`;
 export const URL = {
   API_BASE,
   API_URL,
-  KAKAO_LOGIN: `${API_URL}/auth/kakao/member`,
   KAKAO_OAUTH: `${API_BASE}/oauth2/authorization/kakao`,
 
   REISSUE: `${API_URL}/reissue`,

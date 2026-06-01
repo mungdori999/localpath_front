@@ -278,11 +278,45 @@
   line-height: 1.4;
 }
 
+.course-spot__actions,
+.purchase-spot__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.course-spot__curation-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border: 1px solid var(--brand);
+  border-radius: 8px;
+  background: var(--brand-bg);
+  font-family: inherit;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--brand);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.course-spot__curation-btn:active {
+  transform: scale(0.98);
+}
+
 .course-spot__map-link {
   font-size: 0.6875rem;
   font-weight: 600;
   color: var(--brand);
   text-decoration: none;
+}
+
+.purchase-spot__actions a {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--brand);
 }
 
 @keyframes pass-expand {
