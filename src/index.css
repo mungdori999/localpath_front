@@ -454,8 +454,25 @@ body {
   border: 1px solid var(--border);
 }
 
-.purchase-qty > span {
+.purchase-qty__label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.purchase-qty__label > span {
   font-weight: 600;
+}
+
+.purchase-qty__label small {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.quantity-control button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .quantity-control {

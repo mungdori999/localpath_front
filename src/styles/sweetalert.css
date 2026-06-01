@@ -1,0 +1,28 @@
+.lp-swal-popup {
+  font-family: var(--font);
+  border-radius: var(--radius);
+  padding: 0.5rem 0.25rem 1rem;
+}
+
+.lp-swal-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--text);
+}
+
+.lp-swal-text,
+.lp-swal-text p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.lp-swal-text strong {
+  color: var(--brand);
+}
+
+.lp-swal-confirm {
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  padding: 0.65rem 1.25rem !important;
+}

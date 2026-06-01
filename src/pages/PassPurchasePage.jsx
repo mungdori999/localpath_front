@@ -6,7 +6,8 @@ import QuantityControl from '../components/ui/QuantityControl'
 import { usePass } from '../hooks/usePass'
 import { purchasePass } from '../api/memberPassesApi'
 import { ROUTES } from '../constants/routes'
-import { MSG } from '../constants/messages'
+import { MSG, MAX_PASS_PURCHASE_QUANTITY } from '../constants/messages'
+import { showError, showMaxPurchaseLimit } from '../utils/alert'
 import { formatPrice } from '../utils/format'
 import './PassPurchasePage.css'
 
@@ -32,16 +33,39 @@ export default function PassPurchasePage() {
 
   const total = pass.price * quantity
 
+  function handleQuantityChange(next) {
+    if (next > MAX_PASS_PURCHASE_QUANTITY) {
+      showMaxPurchaseLimit(MAX_PASS_PURCHASE_QUANTITY)
+      return
+    }
+    setQuantity(Math.max(1, next))
+  }
+
   async function handlePurchase() {
+    if (quantity > MAX_PASS_PURCHASE_QUANTITY) {
+      await showMaxPurchaseLimit(MAX_PASS_PURCHASE_QUANTITY)
+      return
+    }
+
     setPurchasing(true)
     setPurchaseError('')
     try {
       const result = await purchasePass(pass.id, quantity)
       setPurchaseResult(result)
     } catch (err) {
-      setPurchaseError(
-        err.response?.data?.detail ?? '구매에 실패했어요. 다시 시도해 주세요.',
-      )
+      const detail = err.response?.data?.detail
+      if (
+        err.response?.status === 400 &&
+        typeof detail === 'string' &&
+        detail.toLowerCase().includes('quantity')
+      ) {
+        await showMaxPurchaseLimit(MAX_PASS_PURCHASE_QUANTITY)
+      } else {
+        const message =
+          detail ?? '구매에 실패했어요. 다시 시도해 주세요.'
+        setPurchaseError(message)
+        await showError('구매 실패', message)
+      }
     } finally {
       setPurchasing(false)
     }
@@ -83,7 +107,8 @@ export default function PassPurchasePage() {
         </Link>
 
         <p className="purchase-demo-note">
-          실제 결제 없이 체험용 가상 구매입니다 · 이용권 유효기간 24시간
+          실제 결제 없이 체험용 가상 구매입니다 · 이용권 유효기간 24시간 · 최대{' '}
+          {MAX_PASS_PURCHASE_QUANTITY}매
         </p>
 
         <article className="purchase-hero">
@@ -118,8 +143,16 @@ export default function PassPurchasePage() {
         </section>
 
         <div className="purchase-qty">
-          <span>수량</span>
-          <QuantityControl value={quantity} onChange={setQuantity} />
+          <div className="purchase-qty__label">
+            <span>수량</span>
+            <small>최대 {MAX_PASS_PURCHASE_QUANTITY}매</small>
+          </div>
+          <QuantityControl
+            value={quantity}
+            onChange={handleQuantityChange}
+            max={MAX_PASS_PURCHASE_QUANTITY}
+            onMaxReached={() => showMaxPurchaseLimit(MAX_PASS_PURCHASE_QUANTITY)}
+          />
         </div>
 
         {purchaseError && (

@@ -7,3 +7,6 @@ export const MSG = {
   BADGE_FETCH_ERROR: '배지 정보를 불러오지 못했어요',
   DEFAULT_USER_NAME: '회원',
 }
+
+/** 백엔드 PurchasePassRequest @Max 와 동일 */
+export const MAX_PASS_PURCHASE_QUANTITY = 20

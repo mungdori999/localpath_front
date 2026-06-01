@@ -4,6 +4,7 @@ import { submitSurvey } from '../api/surveyApi'
 import { useSurveyQuestions } from '../hooks/useSurveyQuestions'
 import { ROUTES } from '../constants/routes'
 import { MSG } from '../constants/messages'
+import { showSurveyIncomplete } from '../utils/alert'
 import PageHeader from '../components/ui/PageHeader'
 import './SurveyPage.css'
 
@@ -18,16 +19,22 @@ export default function SurveyPage() {
     setAnswers((prev) => ({ ...prev, [questionId]: optionId }))
   }
 
-  const allAnswered =
-    questions?.length > 0 &&
-    questions.every((q) => answers[q.id])
+  const totalCount = questions?.length ?? 0
+  const answeredCount = questions?.filter((q) => answers[q.id]).length ?? 0
+  const allAnswered = totalCount > 0 && answeredCount === totalCount
+
+  function getUnansweredIds() {
+    return questions?.filter((q) => !answers[q.id]).map((q) => q.id) ?? []
+  }
 
   async function handleSubmit(e) {
     e.preventDefault()
+
     if (!allAnswered) {
-      setSubmitError('모든 문항에 답해 주세요.')
+      await showSurveyIncomplete(answeredCount, totalCount)
       return
     }
+
     setSubmitting(true)
     setSubmitError('')
     try {
@@ -42,6 +49,8 @@ export default function SurveyPage() {
     }
   }
 
+  const unansweredIds = getUnansweredIds()
+
   return (
     <section className="page survey-page">
       <PageHeader
@@ -55,42 +64,52 @@ export default function SurveyPage() {
         <p>설문을 불러오지 못했어요</p>
       ) : (
         <form className="survey-form" onSubmit={handleSubmit}>
-          {questions.map((question, index) => (
-            <fieldset key={question.id} className="survey-question">
-              <legend>
-                <span className="survey-question__num">{index + 1}</span>
-                {question.text}
-              </legend>
-              <div
-                className="survey-options"
-                role="radiogroup"
-                aria-label={question.text}
+          {questions.map((question, index) => {
+            const isUnanswered = unansweredIds.includes(question.id)
+            return (
+              <fieldset
+                key={question.id}
+                className={`survey-question${isUnanswered && answeredCount > 0 ? ' survey-question--incomplete' : ''}`}
               >
-                {question.options.map((option) => {
-                  const selected = answers[question.id] === option.id
-                  return (
-                    <button
-                      key={`${question.id}-${option.id}`}
-                      type="button"
-                      role="radio"
-                      aria-checked={selected}
-                      className={`survey-option${selected ? ' survey-option--selected' : ''}`}
-                      onClick={() => selectAnswer(question.id, option.id)}
-                    >
-                      {option.label}
-                    </button>
-                  )
-                })}
-              </div>
-            </fieldset>
-          ))}
+                <legend>
+                  <span className="survey-question__num">{index + 1}</span>
+                  {question.text}
+                </legend>
+                <div
+                  className="survey-options"
+                  role="radiogroup"
+                  aria-label={question.text}
+                >
+                  {question.options.map((option) => {
+                    const selected = answers[question.id] === option.id
+                    return (
+                      <button
+                        key={`${question.id}-${option.id}`}
+                        type="button"
+                        role="radio"
+                        aria-checked={selected}
+                        className={`survey-option${selected ? ' survey-option--selected' : ''}`}
+                        onClick={() => selectAnswer(question.id, option.id)}
+                      >
+                        {option.label}
+                      </button>
+                    )
+                  })}
+                </div>
+              </fieldset>
+            )
+          })}
+
+          <p className="survey-form__progress" aria-live="polite">
+            {answeredCount} / {totalCount} 문항 완료
+          </p>
 
           {submitError && <p className="survey-form__error">{submitError}</p>}
 
           <button
             type="submit"
             className="btn btn--primary btn--lg btn--block"
-            disabled={!allAnswered || submitting}
+            disabled={submitting}
           >
             {submitting ? '저장 중…' : '결과 보기'}
           </button>

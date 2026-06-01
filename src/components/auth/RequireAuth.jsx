@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { hasAuthSession } from '../../utils/authSession'
 import { ROUTES } from '../../constants/routes'
-import { MSG } from '../../constants/messages'
+import { showLoginRequired } from '../../utils/alert'
 
 export default function RequireAuth({ children }) {
   const { isLoggedIn } = useAuth()
@@ -17,7 +17,7 @@ export default function RequireAuth({ children }) {
 
     if (!alertedRef.current) {
       alertedRef.current = true
-      window.alert(MSG.LOGIN_REQUIRED)
+      showLoginRequired()
     }
     navigate(ROUTES.HOME, { replace: true })
   }, [allowed, navigate])
