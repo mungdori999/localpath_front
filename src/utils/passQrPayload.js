@@ -11,8 +11,11 @@ export function buildPassQrPayload(ticket) {
   })
 }
 
+const KOREA_TZ = 'Asia/Seoul'
+
 export function formatExpiresAt(expiresAt) {
   return new Date(expiresAt).toLocaleString('ko-KR', {
+    timeZone: KOREA_TZ,
     month: 'short',
     day: 'numeric',
     hour: '2-digit',

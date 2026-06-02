@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from 'react-router-dom'
 import { isPurchaseRoute } from '../constants/routes'
 import Header from './Header'
+import AppFooter from './AppFooter'
 import BottomNav from './BottomNav'
 
 export default function Layout() {
@@ -16,6 +17,7 @@ export default function Layout() {
         >
           <Outlet />
         </main>
+        <AppFooter />
         {showNav && <BottomNav />}
       </div>
     </div>
