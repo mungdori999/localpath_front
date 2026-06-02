@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../constants/routes";
+import { getPassImageUrl } from "../../constants/passImages";
 import { useAuth } from "../../hooks/useAuth";
 import { useHomeSurvey } from "../../hooks/useHomeSurvey";
 import { MSG } from "../../constants/messages";
@@ -41,6 +42,7 @@ export default function HomeRecommendation() {
   }
 
   const rec = home.recommendation;
+  const passImageUrl = rec ? getPassImageUrl(rec.passId) : null;
   const topTypes = home.typeScores?.slice(0, 2) ?? [];
 
   return (
@@ -65,9 +67,17 @@ export default function HomeRecommendation() {
 
       {rec && (
         <article className="home-rec__card">
-          <span className="home-rec__pass-emoji" aria-hidden>
-            {rec.passImage}
-          </span>
+          {passImageUrl ? (
+            <img
+              className="home-rec__pass-thumb"
+              src={passImageUrl}
+              alt=""
+            />
+          ) : (
+            <span className="home-rec__pass-emoji" aria-hidden>
+              {rec.passImage}
+            </span>
+          )}
           <div>
             <strong>{rec.passName}</strong>
             <p>

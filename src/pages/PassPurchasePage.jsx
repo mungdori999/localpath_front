@@ -6,6 +6,7 @@ import QuantityControl from '../components/ui/QuantityControl'
 import { usePass } from '../hooks/usePass'
 import { purchasePass } from '../api/memberPassesApi'
 import { ROUTES } from '../constants/routes'
+import { getPassImageUrl } from '../constants/passImages'
 import { MSG, MAX_PASS_PURCHASE_QUANTITY } from '../constants/messages'
 import { showError, showMaxPurchaseLimit } from '../utils/alert'
 import { formatPrice } from '../utils/format'
@@ -32,6 +33,7 @@ export default function PassPurchasePage() {
   }
 
   const total = pass.price * quantity
+  const passImageUrl = getPassImageUrl(pass.id)
 
   function handleQuantityChange(next) {
     if (next > MAX_PASS_PURCHASE_QUANTITY) {
@@ -112,9 +114,17 @@ export default function PassPurchasePage() {
         </p>
 
         <article className="purchase-hero">
-          <span className="purchase-hero__emoji" aria-hidden>
-            {pass.image}
-          </span>
+          {passImageUrl ? (
+            <img
+              className="purchase-hero__thumb"
+              src={passImageUrl}
+              alt=""
+            />
+          ) : (
+            <span className="purchase-hero__emoji" aria-hidden>
+              {pass.image}
+            </span>
+          )}
           <div>
             <h1>{pass.name}</h1>
             <p className="purchase-hero__meta">{pass.tagline}</p>

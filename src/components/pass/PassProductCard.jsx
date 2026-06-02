@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import CourseMap from '../map/CourseMap'
 import SpotList from '../course/SpotList'
 import { ROUTES } from '../../constants/routes'
+import { getPassImageUrl } from '../../constants/passImages'
 import { formatPrice } from '../../utils/format'
 import './PassProductCard.css'
 
@@ -45,6 +46,7 @@ function CourseBlock({ course, defaultOpen }) {
 
 export default function PassProductCard({ pass }) {
   const [expanded, setExpanded] = useState(false)
+  const passImageUrl = getPassImageUrl(pass.id)
 
   return (
     <article
@@ -56,9 +58,17 @@ export default function PassProductCard({ pass }) {
         onClick={() => setExpanded((v) => !v)}
         aria-expanded={expanded}
       >
-        <span className="pass-product__emoji" aria-hidden>
-          {pass.image}
-        </span>
+        {passImageUrl ? (
+          <img
+            className="pass-product__thumb"
+            src={passImageUrl}
+            alt=""
+          />
+        ) : (
+          <span className="pass-product__emoji" aria-hidden>
+            {pass.image}
+          </span>
+        )}
         <div className="pass-product__summary">
           <h2>{pass.name}</h2>
           <p className="pass-product__tagline">{pass.tagline}</p>

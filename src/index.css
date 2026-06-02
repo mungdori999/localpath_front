@@ -252,7 +252,16 @@ body {
   margin-bottom: 1rem;
 }
 
+.home-rec__pass-thumb {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
 .home-rec__pass-emoji {
+  flex-shrink: 0;
   font-size: 2rem;
   line-height: 1;
 }
@@ -377,6 +386,15 @@ body {
   gap: 16px;
   align-items: flex-start;
   margin-bottom: 20px;
+}
+
+.purchase-hero__thumb {
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+  object-fit: cover;
+  display: block;
 }
 
 .purchase-hero__emoji {

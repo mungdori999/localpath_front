@@ -28,6 +28,15 @@
   background: var(--bg-muted);
 }
 
+.pass-product__thumb {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  object-fit: cover;
+  display: block;
+}
+
 .pass-product__emoji {
   flex-shrink: 0;
   width: 52px;

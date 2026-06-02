@@ -1,60 +1,61 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { submitSurvey } from '../api/surveyApi'
-import { useSurveyQuestions } from '../hooks/useSurveyQuestions'
-import { ROUTES } from '../constants/routes'
-import { MSG } from '../constants/messages'
-import { showSurveyIncomplete } from '../utils/alert'
-import PageHeader from '../components/ui/PageHeader'
-import './SurveyPage.css'
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { submitSurvey } from "../api/surveyApi";
+import { useSurveyQuestions } from "../hooks/useSurveyQuestions";
+import { ROUTES } from "../constants/routes";
+import { MSG } from "../constants/messages";
+import { showSurveyIncomplete } from "../utils/alert";
+import PageHeader from "../components/ui/PageHeader";
+import "./SurveyPage.css";
 
 export default function SurveyPage() {
-  const navigate = useNavigate()
-  const { data: questions, loading, error } = useSurveyQuestions()
-  const [answers, setAnswers] = useState({})
-  const [submitting, setSubmitting] = useState(false)
-  const [submitError, setSubmitError] = useState('')
+  const navigate = useNavigate();
+  const { data: questions, loading, error } = useSurveyQuestions();
+  const [answers, setAnswers] = useState({});
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   function selectAnswer(questionId, optionId) {
-    setAnswers((prev) => ({ ...prev, [questionId]: optionId }))
+    setAnswers((prev) => ({ ...prev, [questionId]: optionId }));
   }
 
-  const totalCount = questions?.length ?? 0
-  const answeredCount = questions?.filter((q) => answers[q.id]).length ?? 0
-  const allAnswered = totalCount > 0 && answeredCount === totalCount
+  const totalCount = questions?.length ?? 0;
+  const answeredCount = questions?.filter((q) => answers[q.id]).length ?? 0;
+  const allAnswered = totalCount > 0 && answeredCount === totalCount;
 
   function getUnansweredIds() {
-    return questions?.filter((q) => !answers[q.id]).map((q) => q.id) ?? []
+    return questions?.filter((q) => !answers[q.id]).map((q) => q.id) ?? [];
   }
 
   async function handleSubmit(e) {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!allAnswered) {
-      await showSurveyIncomplete(answeredCount, totalCount)
-      return
+      await showSurveyIncomplete(answeredCount, totalCount);
+      return;
     }
 
-    setSubmitting(true)
-    setSubmitError('')
+    setSubmitting(true);
+    setSubmitError("");
     try {
-      await submitSurvey(answers)
-      navigate(ROUTES.HOME, { replace: true })
+      await submitSurvey(answers);
+      navigate(ROUTES.HOME, { replace: true });
     } catch (err) {
       setSubmitError(
-        err.response?.data?.detail ?? '설문 저장에 실패했어요. 다시 시도해 주세요.',
-      )
+        err.response?.data?.detail ??
+          "설문 저장에 실패했어요. 다시 시도해 주세요.",
+      );
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
   }
 
-  const unansweredIds = getUnansweredIds()
+  const unansweredIds = getUnansweredIds();
 
   return (
     <section className="page survey-page">
       <PageHeader
-        title="나가기 취향 설문"
+        title="취향 설문"
         description="5가지 질문으로 데이트·외식에 맞는 코스를 찾아보세요"
       />
 
@@ -65,11 +66,11 @@ export default function SurveyPage() {
       ) : (
         <form className="survey-form" onSubmit={handleSubmit}>
           {questions.map((question, index) => {
-            const isUnanswered = unansweredIds.includes(question.id)
+            const isUnanswered = unansweredIds.includes(question.id);
             return (
               <fieldset
                 key={question.id}
-                className={`survey-question${isUnanswered && answeredCount > 0 ? ' survey-question--incomplete' : ''}`}
+                className={`survey-question${isUnanswered && answeredCount > 0 ? " survey-question--incomplete" : ""}`}
               >
                 <legend>
                   <span className="survey-question__num">{index + 1}</span>
@@ -81,23 +82,23 @@ export default function SurveyPage() {
                   aria-label={question.text}
                 >
                   {question.options.map((option) => {
-                    const selected = answers[question.id] === option.id
+                    const selected = answers[question.id] === option.id;
                     return (
                       <button
                         key={`${question.id}-${option.id}`}
                         type="button"
                         role="radio"
                         aria-checked={selected}
-                        className={`survey-option${selected ? ' survey-option--selected' : ''}`}
+                        className={`survey-option${selected ? " survey-option--selected" : ""}`}
                         onClick={() => selectAnswer(question.id, option.id)}
                       >
                         {option.label}
                       </button>
-                    )
+                    );
                   })}
                 </div>
               </fieldset>
-            )
+            );
           })}
 
           <p className="survey-form__progress" aria-live="polite">
@@ -111,7 +112,7 @@ export default function SurveyPage() {
             className="btn btn--primary btn--lg btn--block"
             disabled={submitting}
           >
-            {submitting ? '저장 중…' : '결과 보기'}
+            {submitting ? "저장 중…" : "결과 보기"}
           </button>
         </form>
       )}
@@ -120,5 +121,5 @@ export default function SurveyPage() {
         마이페이지로
       </Link>
     </section>
-  )
+  );
 }

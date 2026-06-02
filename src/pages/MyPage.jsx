@@ -1,22 +1,26 @@
-import { Link } from 'react-router-dom'
-import { useAuth } from '../hooks/useAuth'
-import { useMemberPasses } from '../hooks/useMemberPasses'
-import { getDisplayName } from '../utils/authSession'
-import { formatExpiresAt, formatRemainingTime } from '../utils/passQrPayload'
-import { ROUTES } from '../constants/routes'
-import { MSG } from '../constants/messages'
-import PageHeader from '../components/ui/PageHeader'
-import PageState from '../components/ui/PageState'
-import UserAvatar from '../components/ui/UserAvatar'
-import './MyPage.css'
+import { Link } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import { useMemberPasses } from "../hooks/useMemberPasses";
+import { getDisplayName } from "../utils/authSession";
+import { formatExpiresAt, formatRemainingTime } from "../utils/passQrPayload";
+import { ROUTES } from "../constants/routes";
+import { MSG } from "../constants/messages";
+import PageHeader from "../components/ui/PageHeader";
+import PageState from "../components/ui/PageState";
+import UserAvatar from "../components/ui/UserAvatar";
+import "./MyPage.css";
 
 export default function MyPage() {
-  const { user, logout, loading } = useAuth()
-  const { data: tickets, loading: passesLoading, error: passesError } = useMemberPasses()
-  const displayName = getDisplayName(user)
+  const { user, logout, loading } = useAuth();
+  const {
+    data: tickets,
+    loading: passesLoading,
+    error: passesError,
+  } = useMemberPasses();
+  const displayName = getDisplayName(user);
 
-  const activeTickets = tickets?.filter((t) => t.valid) ?? []
-  const expiredTickets = tickets?.filter((t) => !t.valid) ?? []
+  const activeTickets = tickets?.filter((t) => t.valid) ?? [];
+  const expiredTickets = tickets?.filter((t) => !t.valid) ?? [];
 
   return (
     <section className="page mypage">
@@ -50,7 +54,7 @@ export default function MyPage() {
             ✨
           </span>
           <span>
-            <strong>나가기 취향 설문</strong>
+            <strong>취향 설문</strong>
             <small>데이트·외식에 맞는 코스 추천받기</small>
           </span>
           <span className="mypage-menu__arrow" aria-hidden>
@@ -145,8 +149,8 @@ export default function MyPage() {
         onClick={logout}
         disabled={loading}
       >
-        {loading ? MSG.LOGOUT_LOADING : '로그아웃'}
+        {loading ? MSG.LOGOUT_LOADING : "로그아웃"}
       </button>
     </section>
-  )
+  );
 }
