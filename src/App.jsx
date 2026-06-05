@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes, useParams } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext.jsx'
 import RequireAuth from './components/auth/RequireAuth'
 import Layout from './components/Layout'
@@ -10,6 +10,11 @@ import SurveyPage from './pages/SurveyPage'
 import BadgePage from './pages/BadgePage'
 import PassQrPage from './pages/PassQrPage'
 import { ROUTES } from './constants/routes'
+
+function PassQrTrailingSlashRedirect() {
+  const { ticketId } = useParams()
+  return <Navigate to={ROUTES.passTicketQr(ticketId)} replace />
+}
 
 export default function App() {
   return (
@@ -34,6 +39,10 @@ export default function App() {
                   <MyPage />
                 </RequireAuth>
               }
+            />
+            <Route
+              path="mypage/tickets/:ticketId/qr/"
+              element={<PassQrTrailingSlashRedirect />}
             />
             <Route
               path="mypage/tickets/:ticketId/qr"
