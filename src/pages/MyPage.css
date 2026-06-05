@@ -89,6 +89,14 @@
   color: var(--text-muted);
 }
 
+.mypage-passes__focus {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--brand);
+  line-height: 1.35;
+}
+
 .mypage-menu__arrow {
   color: var(--text-muted);
   font-size: 1.125rem;

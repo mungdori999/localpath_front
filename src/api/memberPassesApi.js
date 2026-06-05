@@ -9,6 +9,8 @@ export function fetchMyPassTicket(ticketId) {
   return api.get(`${URL.MY_PASSES}/${ticketId}`).then((res) => res.data)
 }
 
-export function purchasePass(passId, quantity) {
-  return api.post(URL.MY_PASSES, { passId, quantity }).then((res) => res.data)
+export function purchasePass(passId, quantity, spendingFocus) {
+  return api
+    .post(URL.MY_PASSES, { passId, quantity, spendingFocus })
+    .then((res) => res.data)
 }

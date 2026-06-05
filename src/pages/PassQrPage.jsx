@@ -8,6 +8,11 @@ import { ROUTES } from '../constants/routes'
 import { MSG } from '../constants/messages'
 import PageHeader from '../components/ui/PageHeader'
 import PageState from '../components/ui/PageState'
+import PassTicketThumb from '../components/pass/PassTicketThumb'
+import {
+  getSpendingFocusById,
+  getSpendingBalances,
+} from '../constants/spendingFocus'
 import './PassQrPage.css'
 
 export default function PassQrPage() {
@@ -52,6 +57,11 @@ export default function PassQrPage() {
     return <Navigate to={ROUTES.MYPAGE} replace />
   }
 
+  const focus = ticket ? getSpendingFocusById(ticket.spendingFocus) : null
+  const balances =
+    ticket && focus ? getSpendingBalances(ticket.unitPrice, ticket.spendingFocus) : null
+  const showBalances = balances && ticket?.valid
+
   return (
     <section className="page pass-qr-page">
       <Link to={ROUTES.MYPAGE} className="back-link">
@@ -74,11 +84,18 @@ export default function PassQrPage() {
               className={`pass-qr-card${ticket.valid ? '' : ' pass-qr-card--expired'}`}
             >
               <div className="pass-qr-card__head">
-                <span className="pass-qr-card__emoji" aria-hidden>
-                  {ticket.passImage}
-                </span>
+                <PassTicketThumb
+                  passId={ticket.passId}
+                  passImage={ticket.passImage}
+                  className="pass-qr-card__thumb"
+                />
                 <div>
                   <h2>{ticket.passName}</h2>
+                  {focus && (
+                    <p className="pass-qr-card__focus">
+                      {focus.name} · {focus.splitLabel}
+                    </p>
+                  )}
                   <p>{formatPrice(ticket.unitPrice)}원</p>
                 </div>
               </div>
@@ -99,6 +116,39 @@ export default function PassQrPage() {
                   <p className="pass-qr-card__loading">{MSG.LOADING}</p>
                 )}
               </div>
+
+              {showBalances && (
+                <section
+                  className="pass-qr-balances"
+                  aria-labelledby="pass-qr-balances-title"
+                >
+                  <h3 id="pass-qr-balances-title" className="pass-qr-balances__title">
+                    지역별 사용 가능 잔액
+                  </h3>
+                  <p className="pass-qr-balances__total">
+                    패스 금액 <strong>{formatPrice(balances.total)}원</strong>
+                  </p>
+                  <ul className="pass-qr-balances__list">
+                    <li>
+                      <span className="pass-qr-balances__label">
+                        망리단길
+                        <small>{balances.mangriPercent}%</small>
+                      </span>
+                      <strong>{formatPrice(balances.mangri)}원</strong>
+                    </li>
+                    <li>
+                      <span className="pass-qr-balances__label">
+                        망원시장
+                        <small>{balances.marketPercent}%</small>
+                      </span>
+                      <strong>{formatPrice(balances.market)}원</strong>
+                    </li>
+                  </ul>
+                  <p className="pass-qr-balances__hint">
+                    데모용 표시입니다. 실제 사용 내역은 반영되지 않아요.
+                  </p>
+                </section>
+              )}
 
               <dl className="pass-qr-card__meta">
                 <div>

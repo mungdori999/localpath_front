@@ -59,6 +59,13 @@
   border-radius: 10px;
 }
 
+.purchase-success__focus {
+  display: inline-block;
+  margin-top: 0.35rem;
+  color: var(--brand);
+  font-weight: 600;
+}
+
 .purchase-success__actions {
   display: flex;
   flex-direction: column;

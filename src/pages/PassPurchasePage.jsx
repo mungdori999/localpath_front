@@ -3,6 +3,8 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import CourseMap from '../components/map/CourseMap'
 import SpotList from '../components/course/SpotList'
 import QuantityControl from '../components/ui/QuantityControl'
+import SpendingFocusPicker from '../components/purchase/SpendingFocusPicker'
+import { getSpendingFocusById } from '../constants/spendingFocus'
 import { usePass } from '../hooks/usePass'
 import { purchasePass } from '../api/memberPassesApi'
 import { ROUTES } from '../constants/routes'
@@ -16,6 +18,7 @@ export default function PassPurchasePage() {
   const { passId } = useParams()
   const { data: pass, loading, error } = usePass(passId)
   const [quantity, setQuantity] = useState(1)
+  const [spendingFocus, setSpendingFocus] = useState(null)
   const [purchaseResult, setPurchaseResult] = useState(null)
   const [purchasing, setPurchasing] = useState(false)
   const [purchaseError, setPurchaseError] = useState('')
@@ -44,6 +47,11 @@ export default function PassPurchasePage() {
   }
 
   async function handlePurchase() {
+    if (!spendingFocus) {
+      await showError('집중형 선택', '집중형 패스를 하나 골라 주세요.')
+      return
+    }
+
     if (quantity > MAX_PASS_PURCHASE_QUANTITY) {
       await showMaxPurchaseLimit(MAX_PASS_PURCHASE_QUANTITY)
       return
@@ -52,7 +60,7 @@ export default function PassPurchasePage() {
     setPurchasing(true)
     setPurchaseError('')
     try {
-      const result = await purchasePass(pass.id, quantity)
+      const result = await purchasePass(pass.id, quantity, spendingFocus)
       setPurchaseResult(result)
     } catch (err) {
       const detail = err.response?.data?.detail
@@ -74,6 +82,7 @@ export default function PassPurchasePage() {
   }
 
   if (purchaseResult) {
+    const focus = getSpendingFocusById(purchaseResult.tickets[0]?.spendingFocus)
     return (
       <section className="page purchase purchase--success">
         <div className="purchase-success">
@@ -85,6 +94,14 @@ export default function PassPurchasePage() {
             <strong>{pass.name}</strong>
             <br />
             {purchaseResult.tickets.length}매가 발급되었습니다
+            {focus && (
+              <>
+                <br />
+                <small className="purchase-success__focus">
+                  {focus.name} · {focus.splitLabel}
+                </small>
+              </>
+            )}
             <br />
             <small>각 이용권은 구매 후 24시간 동안 유효해요</small>
           </p>
@@ -132,6 +149,11 @@ export default function PassPurchasePage() {
         </article>
 
         <p className="purchase-desc">{pass.description}</p>
+
+        <SpendingFocusPicker
+          value={spendingFocus}
+          onChange={setSpendingFocus}
+        />
 
         <section className="purchase-courses">
           <h2>포함 코스</h2>
@@ -181,7 +203,7 @@ export default function PassPurchasePage() {
           type="button"
           className="btn btn--primary btn--lg btn--block"
           onClick={handlePurchase}
-          disabled={purchasing}
+          disabled={purchasing || !spendingFocus}
         >
           {purchasing ? '처리 중…' : `${formatPrice(total)}원 가상 결제하기`}
         </button>

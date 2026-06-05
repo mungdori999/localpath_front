@@ -8,7 +8,14 @@ import { MSG } from "../constants/messages";
 import PageHeader from "../components/ui/PageHeader";
 import PageState from "../components/ui/PageState";
 import UserAvatar from "../components/ui/UserAvatar";
+import PassTicketThumb from "../components/pass/PassTicketThumb";
+import { getSpendingFocusById } from "../constants/spendingFocus";
 import "./MyPage.css";
+
+function ticketFocusLabel(spendingFocus) {
+  const focus = getSpendingFocusById(spendingFocus);
+  return focus ? `${focus.name} · ${focus.splitLabel}` : null;
+}
 
 export default function MyPage() {
   const { user, logout, loading } = useAuth();
@@ -76,17 +83,24 @@ export default function MyPage() {
         >
           {activeTickets.length > 0 && (
             <ul className="mypage-passes__list">
-              {activeTickets.map((ticket) => (
+              {activeTickets.map((ticket) => {
+                const focusLabel = ticketFocusLabel(ticket.spendingFocus);
+                return (
                 <li key={ticket.ticketId}>
                   <Link
                     to={ROUTES.passTicketQr(ticket.ticketId)}
                     className="mypage-menu__item mypage-passes__item"
                   >
-                    <span className="mypage-menu__icon" aria-hidden>
-                      {ticket.passImage}
-                    </span>
+                    <PassTicketThumb
+                      passId={ticket.passId}
+                      passImage={ticket.passImage}
+                      className="mypage-menu__icon"
+                    />
                     <span>
                       <strong>{ticket.passName}</strong>
+                      {focusLabel && (
+                        <span className="mypage-passes__focus">{focusLabel}</span>
+                      )}
                       <small>
                         {formatRemainingTime(ticket.expiresAt)} · QR 결제 보기
                       </small>
@@ -96,7 +110,8 @@ export default function MyPage() {
                     </span>
                   </Link>
                 </li>
-              ))}
+              );
+              })}
             </ul>
           )}
 
@@ -122,21 +137,29 @@ export default function MyPage() {
             <>
               <h3 className="mypage-passes__subtitle">만료된 패스</h3>
               <ul className="mypage-passes__list mypage-passes__list--expired">
-                {expiredTickets.map((ticket) => (
+                {expiredTickets.map((ticket) => {
+                  const focusLabel = ticketFocusLabel(ticket.spendingFocus);
+                  return (
                   <li key={ticket.ticketId}>
                     <div className="mypage-menu__item mypage-menu__item--static mypage-passes__item">
-                      <span className="mypage-menu__icon" aria-hidden>
-                        {ticket.passImage}
-                      </span>
+                      <PassTicketThumb
+                        passId={ticket.passId}
+                        passImage={ticket.passImage}
+                        className="mypage-menu__icon"
+                      />
                       <span>
                         <strong>{ticket.passName}</strong>
+                        {focusLabel && (
+                          <span className="mypage-passes__focus">{focusLabel}</span>
+                        )}
                         <small>
                           만료 · {formatExpiresAt(ticket.expiresAt)}
                         </small>
                       </span>
                     </div>
                   </li>
-                ))}
+                );
+                })}
               </ul>
             </>
           )}

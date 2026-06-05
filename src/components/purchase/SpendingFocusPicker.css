@@ -1,0 +1,87 @@
+.spending-focus {
+  margin-bottom: 20px;
+}
+
+.spending-focus__title {
+  margin: 0 0 6px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.spending-focus__desc {
+  margin: 0 0 12px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.spending-focus__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.spending-focus__card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.spending-focus__card--selected {
+  border-color: var(--brand);
+  background: var(--brand-bg);
+}
+
+.spending-focus__card:active {
+  opacity: 0.85;
+}
+
+.spending-focus__img {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.spending-focus__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.spending-focus__info strong {
+  font-size: 0.875rem;
+}
+
+.spending-focus__info span:last-child {
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+.spending-focus__card--selected .spending-focus__info span:last-child {
+  color: var(--brand);
+}
+
+.spending-focus__check {
+  flex-shrink: 0;
+  width: 22px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--brand);
+  text-align: center;
+}
