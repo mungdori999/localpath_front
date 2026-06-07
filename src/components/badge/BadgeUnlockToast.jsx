@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import BadgeIcon from './BadgeIcon'
 import './BadgeUnlockToast.css'
 
 export default function BadgeUnlockToast({ badgeKeys, badges, onClose }) {
@@ -19,8 +20,9 @@ export default function BadgeUnlockToast({ badgeKeys, badges, onClose }) {
       <strong>🎉 배지 해금!</strong>
       {unlockedBadges.length > 0 ? (
         unlockedBadges.map((badge) => (
-          <p key={badge.id}>
-            {badge.emoji} {badge.name}
+          <p key={badge.id} className="badge-unlock-toast__item">
+            <BadgeIcon badge={badge} className="badge-unlock-toast__icon" />
+            <span>{badge.name}</span>
           </p>
         ))
       ) : (

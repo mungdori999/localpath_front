@@ -107,6 +107,75 @@
   line-height: 1.45;
 }
 
+.badge-card__visit-rules {
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  background: var(--brand-bg);
+  border: 1px solid rgba(26, 107, 74, 0.18);
+  border-radius: 10px;
+}
+
+.badge-card__visit-rule {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.75rem;
+}
+
+.badge-card__visit-rule + .badge-card__visit-rule {
+  margin-top: 6px;
+}
+
+.badge-card__visit-rule span {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.badge-card__visit-rule strong {
+  font-size: 0.8125rem;
+  color: var(--text);
+}
+
+.badge-card__visit-rule--done {
+  color: var(--brand) !important;
+}
+
+.badge-card__categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.badge-card__categories li {
+  padding: 3px 8px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--brand);
+  background: var(--surface);
+  border-radius: 999px;
+}
+
+.badge-card__visit-hint {
+  margin: 8px 0 0;
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.badge-card__req-category {
+  margin-left: auto;
+  padding: 2px 7px;
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: var(--brand);
+  background: var(--brand-bg);
+  border-radius: 999px;
+}
+
 .badge-card__progress {
   position: relative;
   height: 6px;

@@ -25,8 +25,20 @@
   color: var(--text-muted);
 }
 
+.badge-unlock-toast__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge-unlock-toast__icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+}
+
 .badge-unlock-toast p + p {
-  margin-top: 2px;
+  margin-top: 6px;
 }
 
 @keyframes badge-toast-in {

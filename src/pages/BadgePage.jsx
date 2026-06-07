@@ -34,6 +34,15 @@ export default function BadgePage() {
         description="장소에 방문한 뒤 아래에서 방문 인증하고 배지를 모아보세요"
       />
 
+      <p className="badge-page__highlight" role="note">
+        <span className="badge-page__highlight-icon" aria-hidden>
+          ✨
+        </span>
+        <strong>
+          카페·맛집·체험·야경 등 테마별로 방문 인증하고 배지를 모아 보세요!
+        </strong>
+      </p>
+
       <PageState loading={loading} error={error} errorMessage={MSG.BADGE_FETCH_ERROR}>
         <div className="badge-page__summary">
           <strong>
